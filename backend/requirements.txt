@@ -5,5 +5,7 @@ django-cors-headers
 Pillow
 django-filter
 gunicorn
-mysqlclient
+dj-database-url
+psycopg2-binary
 python-dotenv
+whitenoise
