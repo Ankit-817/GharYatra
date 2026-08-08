@@ -11,12 +11,6 @@ The application is built using **React + Vite** on the frontend and **Django RES
 🚀 **Live Application:**  
 https://YOUR-FRONTEND-RENDER-URL.onrender.com
 
-🔗 **Backend API:**  
-https://gharyatra-backend.onrender.com
-
-🔗 **GitHub Repository:**  
-https://github.com/Ankit-817/GharYatra
-
 ---
 
 ## ✨ Features
