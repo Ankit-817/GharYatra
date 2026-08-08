@@ -115,13 +115,6 @@ TEMPLATES = [
 # ============================================================
 # DATABASE
 # ============================================================
-#
-# LOCAL:
-#   Uses SQLite if DATABASE_URL is not present.
-#
-# RENDER:
-#   Uses PostgreSQL through DATABASE_URL.
-#
 
 DATABASES = {
     "default": dj_database_url.config(
@@ -233,15 +226,12 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
-
     "DEFAULT_PAGINATION_CLASS": (
         "rest_framework.pagination.PageNumberPagination"
     ),
-
     "PAGE_SIZE": 20,
 }
 
@@ -301,10 +291,9 @@ SIMPLE_JWT = {
 # ============================================================
 # CORS
 # ============================================================
-#
-# Keep this open temporarily while we deploy the frontend.
-# Once the frontend gets its Render URL, we will restrict this.
-#
+
+# Keep this open temporarily while deploying the frontend.
+# We will restrict this after the frontend is deployed.
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -325,13 +314,14 @@ CSRF_TRUSTED_ORIGINS = [
 # ============================================================
 
 if not DEBUG:
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_PROXY_SSL_HEADER = (
+        "HTTP_X_FORWARDED_PROTO",
+        "https",
+    )
 
     SESSION_COOKIE_SECURE = True
 
     CSRF_COOKIE_SECURE = True
-
-    SECURE_BROWSER_XSS_FILTER = True
 
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
