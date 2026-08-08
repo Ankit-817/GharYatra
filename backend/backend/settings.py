@@ -39,6 +39,17 @@ ALLOWED_HOSTS = [
 
 
 # ============================================================
+# CLOUDINARY
+# ============================================================
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
+}
+
+
+# ============================================================
 # APPLICATIONS
 # ============================================================
 
@@ -56,6 +67,8 @@ THIRD_PARTY_APPS = [
     "rest_framework_simplejwt",
     "corsheaders",
     "django_filters",
+    "cloudinary",
+    "cloudinary_storage",
 ]
 
 LOCAL_APPS = [
@@ -184,16 +197,14 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
 
-MEDIA_ROOT = BASE_DIR / "media"
-
 
 # ============================================================
-# WHITENOISE
+# STORAGE
 # ============================================================
 
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
         "BACKEND": (
@@ -226,12 +237,15 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+
     "DEFAULT_PAGINATION_CLASS": (
         "rest_framework.pagination.PageNumberPagination"
     ),
+
     "PAGE_SIZE": 20,
 }
 
@@ -292,8 +306,8 @@ SIMPLE_JWT = {
 # CORS
 # ============================================================
 
-# Keep this open temporarily while deploying the frontend.
-# We will restrict this after the frontend is deployed.
+# Temporarily allow all origins while deploying.
+# Restrict this later to the production frontend domain.
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -314,6 +328,7 @@ CSRF_TRUSTED_ORIGINS = [
 # ============================================================
 
 if not DEBUG:
+
     SECURE_PROXY_SSL_HEADER = (
         "HTTP_X_FORWARDED_PROTO",
         "https",
