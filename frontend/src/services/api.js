@@ -1,81 +1,83 @@
-import axios from "axios"
+import axios from "axios";
 
-const API_BASE_URL = "http://127.0.0.1:8000/api"
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+if (!API_BASE_URL) {
+  console.error(
+    "VITE_API_BASE_URL is missing. Check frontend/.env and restart Vite."
+  );
+}
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
-})
+});
 
-// Request interceptor to add auth token
+// Add access token to requests
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("access_token")
+    const token = localStorage.getItem("access_token");
 
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
-    return config
+    return config;
   },
   (error) => {
-    return Promise.reject(error)
-  },
-)
+    return Promise.reject(error);
+  }
+);
 
-// Response interceptor to handle token refresh
+// Refresh expired access token
 api.interceptors.response.use(
   (response) => response,
 
   async (error) => {
-    const originalRequest = error.config
+    const originalRequest = error.config;
 
-    // If the request failed because the access token expired
     if (
       error.response?.status === 401 &&
       originalRequest &&
       !originalRequest._retry
     ) {
-      originalRequest._retry = true
+      originalRequest._retry = true;
 
       try {
-        const refreshToken = localStorage.getItem("refresh_token")
+        const refreshToken = localStorage.getItem("refresh_token");
 
         if (refreshToken) {
           const response = await axios.post(
             `${API_BASE_URL}/auth/token/refresh/`,
             {
               refresh: refreshToken,
-            },
-          )
+            }
+          );
 
-          const { access } = response.data
+          const { access } = response.data;
 
-          // Save new access token
-          localStorage.setItem("access_token", access)
+          localStorage.setItem("access_token", access);
 
-          // Update axios default authorization
-          api.defaults.headers.common["Authorization"] = `Bearer ${access}`
+          api.defaults.headers.common.Authorization = `Bearer ${access}`;
 
-          // Update original request authorization
-          originalRequest.headers.Authorization = `Bearer ${access}`
+          originalRequest.headers.Authorization = `Bearer ${access}`;
 
-          // Retry original request
-          return api(originalRequest)
+          return api(originalRequest);
         }
       } catch (refreshError) {
-        // Refresh token is invalid/expired
-        localStorage.removeItem("access_token")
-        localStorage.removeItem("refresh_token")
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
 
-        window.location.href = "/login"
+        delete api.defaults.headers.common.Authorization;
+
+        window.location.href = "/login";
       }
     }
 
-    return Promise.reject(error)
-  },
-)
+    return Promise.reject(error);
+  }
+);
 
-export default api
+export default api;
