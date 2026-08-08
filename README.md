@@ -9,7 +9,7 @@ The application is built using **React + Vite** on the frontend and **Django RES
 ## 🌐 Live Demo
 
 🚀 **Live Application:**  
-https://gharyatra-frontend.onrender.com/profile
+https://gharyatra-frontend.onrender.com
 
 ---
 
