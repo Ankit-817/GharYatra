@@ -20,11 +20,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!i3fr%b#3c2awd2y&_tmf0ps-9kehm=maxjus$nyih=qq(y^jp'
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-local-development-key")
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0','gharyatra.onrender.com']
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "0.0.0.0",
+    "gharyatra.onrender.com",
+    "gharyatra-backend.onrender.com",
+]
 
 
 # Application definition
@@ -184,14 +190,6 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-# CORS settings
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
-
 CORS_ALLOW_CREDENTIALS = True
-
-#CORS_ALLOW_ALL_ORIGINS = DEBUG  # Only in development
 
