@@ -33,9 +33,8 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "0.0.0.0",
-    "gharyatra-property-management-api.onrender.com",
+    "gharyatra-platform-backend.onrender.com",
 ]
-
 
 # ============================================================
 # CLOUDINARY
@@ -313,6 +312,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
 
 # ============================================================
 # CSRF
