@@ -33,8 +33,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "0.0.0.0",
-    "gharyatra.onrender.com",
-    "gharyatra-backend.onrender.com",
+    "gharyatra-property-management-api.onrender.com",
 ]
 
 
@@ -309,17 +308,18 @@ SIMPLE_JWT = {
 # Temporarily allow all origins while deploying.
 # Restrict this later to the production frontend domain.
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://gharyatra-property-management.onrender.com",
+]
 
 CORS_ALLOW_CREDENTIALS = True
-
 
 # ============================================================
 # CSRF
 # ============================================================
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://gharyatra-backend.onrender.com",
+    "https://gharyatra-property-management.onrender.com",
 ]
 
 
